@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
-import { MediaReactProvider, useMediaSearch } from '@media-sdk/media-react';
-import { useGrid, useLightbox } from '@media-sdk/media-ui-react';
+import { MediaReactProvider, useMediaSearch } from '@root-src/media-react';
+import { useGrid, useLightbox } from '@root-src/ui-headless';
 
 function ResultsGrid() {
   const { state, controls } = useMediaSearch();
