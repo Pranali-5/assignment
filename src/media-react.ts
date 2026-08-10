@@ -1,4 +1,6 @@
+import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import type { ReactElement, ReactNode } from 'react';
+import * as core from './index';
 import type {
   CuratedOptions,
   GetByIdOptions,
@@ -21,10 +23,23 @@ export interface MediaReactProviderProps {
   maxCacheEntries?: number;
 }
 
-export function MediaReactProvider(
-  props: MediaReactProviderProps,
-): ReactElement {
-  throw new Error('media-react API design only');
+const ClientContext = createContext<{ client: MediaCoreClient } | null>(null);
+
+export function MediaReactProvider({ config, children, enableConsoleEvents }: MediaReactProviderProps): ReactElement {
+  const cfg = useMemo(() => ({ ...config }), [config]);
+
+  useEffect(() => {
+    if (!cfg?.apiKey) throw new Error('MediaReactProvider: config.apiKey required');
+    core.init(cfg as MediaCoreConfig);
+    if (enableConsoleEvents) core.enableConsoleEvents();
+    return () => {
+      // no teardown in core for now, but keep slot for future
+      core.disableConsoleEvents();
+    };
+  }, [cfg, enableConsoleEvents]);
+
+  const value = useMemo(() => ({ client: (core as unknown) as MediaCoreClient }), []);
+  return <ClientContext.Provider value={value}>{children}</ClientContext.Provider>;
 }
 
 export interface MediaClientContextValue {
@@ -36,7 +51,9 @@ export interface UseMediaClientReturn {
 }
 
 export function useMediaClient(): UseMediaClientReturn {
-  throw new Error('media-react API design only');
+  const ctx = useContext(ClientContext);
+  if (!ctx) throw new Error('useMediaClient must be used inside MediaReactProvider');
+  return { client: ctx.client };
 }
 
 export interface MediaSearchState {
@@ -70,10 +87,72 @@ export interface UseMediaSearchOptions {
   initialPerPage?: number;
 }
 
-export function useMediaSearch(
-  options?: UseMediaSearchOptions,
-): UseMediaSearchReturn {
-  throw new Error('media-react API design only');
+export function useMediaSearch(options?: UseMediaSearchOptions): UseMediaSearchReturn {
+  const { client } = useMediaClient();
+  const [state, setState] = useState<MediaSearchState>({
+    query: options?.initialQuery ?? '',
+    options: options?.initialOptions ?? {},
+    page: options?.initialPage ?? 1,
+    per_page: options?.initialPerPage ?? 15,
+    data: null,
+    isLoading: false,
+    error: null,
+    hasMore: false,
+  });
+
+  const latest = useRef({ query: state.query, options: state.options, page: state.page });
+
+  async function doSearch(q: string, opts?: SearchOptions, page = 1) {
+    setState((s) => ({ ...s, isLoading: true, error: null }));
+    try {
+      const res = await client.search(q, { ...opts, page });
+      setState((s) => ({
+        ...s,
+        query: q,
+        options: opts ?? s.options,
+        page,
+        data: res,
+        isLoading: false,
+        error: null,
+        hasMore: (res as any).next_page ? true : false,
+      }));
+    } catch (err: any) {
+      setState((s) => ({ ...s, isLoading: false, error: err }));
+    }
+  }
+
+  useEffect(() => {
+    // initial fetch if initialQuery provided
+    if (options?.initialQuery) {
+      doSearch(options.initialQuery, options?.initialOptions, options.initialPage ?? 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const controls: MediaSearchControls = {
+    async search(q: string, opts?: SearchOptions) {
+      latest.current = { query: q, options: opts ?? {}, page: 1 };
+      await doSearch(q, opts, 1);
+    },
+    async loadPage(page: number) {
+      const q = latest.current.query;
+      const opts = latest.current.options;
+      await doSearch(q, opts, page);
+    },
+    async loadMore() {
+      const next = state.page + 1;
+      await controls.loadPage(next);
+    },
+    setOptions(opts: SearchOptions) {
+      latest.current.options = opts;
+      setState((s) => ({ ...s, options: opts }));
+    },
+    async refresh() {
+      await doSearch(latest.current.query, latest.current.options, latest.current.page);
+    },
+  };
+
+  return { state, controls };
 }
 
 export interface MediaCuratedState {
@@ -104,10 +183,50 @@ export interface UseMediaCuratedOptions {
   initialPerPage?: number;
 }
 
-export function useMediaCurated(
-  options?: UseMediaCuratedOptions,
-): UseMediaCuratedReturn {
-  throw new Error('media-react API design only');
+export function useMediaCurated(options?: UseMediaCuratedOptions): UseMediaCuratedReturn {
+  const { client } = useMediaClient();
+  const [state, setState] = useState<MediaCuratedState>({
+    options: options?.initialOptions ?? {},
+    page: options?.initialPage ?? 1,
+    per_page: options?.initialPerPage ?? 15,
+    data: null,
+    isLoading: false,
+    error: null,
+    hasMore: false,
+  });
+
+  async function loadPage(page: number) {
+    setState((s) => ({ ...s, isLoading: true, error: null }));
+    try {
+      const res = await client.curated({ ...state.options, page });
+      setState((s) => ({ ...s, page, data: res, isLoading: false, hasMore: !!res.next_page }));
+    } catch (err: any) {
+      setState((s) => ({ ...s, isLoading: false, error: err }));
+    }
+  }
+
+  useEffect(() => {
+    // initial load
+    loadPage(state.page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const controls: MediaCuratedControls = {
+    async loadPage(page: number) {
+      await loadPage(page);
+    },
+    async loadMore() {
+      await loadPage(state.page + 1);
+    },
+    setOptions(opts: CuratedOptions) {
+      setState((s) => ({ ...s, options: opts }));
+    },
+    async refresh() {
+      await loadPage(state.page);
+    },
+  };
+
+  return { state, controls };
 }
 
 export interface MediaItemState<TItem> {
@@ -121,11 +240,28 @@ export interface UseMediaItemReturn<TItem> {
   fetchItem(id: number, opts: GetByIdOptions): Promise<void>;
 }
 
-export function useMediaItem(
-  id: number | null,
-  opts: GetByIdOptions,
-): UseMediaItemReturn<PexelsPhoto | PexelsVideo> {
-  throw new Error('media-react API design only');
+export function useMediaItem(id: number | null, opts: GetByIdOptions): UseMediaItemReturn<PexelsPhoto | PexelsVideo> {
+  const { client } = useMediaClient();
+  const [state, setState] = useState<MediaItemState<PexelsPhoto | PexelsVideo>>({ item: null, isLoading: false, error: null });
+
+  async function fetchItem(idToFetch: number, options: GetByIdOptions) {
+    setState({ item: null, isLoading: true, error: null });
+    try {
+      const item = await client.getById(idToFetch, options);
+      setState({ item, isLoading: false, error: null });
+    } catch (err: any) {
+      setState({ item: null, isLoading: false, error: err });
+    }
+  }
+
+  useEffect(() => {
+    if (id != null) {
+      void fetchItem(id, opts);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  return { state, fetchItem };
 }
 
 export interface UseMediaEventsReturn {
@@ -151,7 +287,30 @@ export interface UseMediaEventsReturn {
 }
 
 export function useMediaEvents(): UseMediaEventsReturn {
-  throw new Error('media-react API design only');
+  const [enabled, setEnabled] = useState(false);
+
+  function on<E extends MediaCoreEventName>(event: E, listener: MediaCoreEventHandler<E>) {
+    core.on(event, listener);
+  }
+  function off<E extends MediaCoreEventName>(event: E, listener: MediaCoreEventHandler<E>) {
+    core.off(event, listener);
+  }
+  function subscribe<E extends MediaCoreEventName>(event: E, listener: MediaCoreEventHandler<E>) {
+    core.subscribe(event, listener);
+  }
+  function unsubscribe<E extends MediaCoreEventName>(event: E, listener: MediaCoreEventHandler<E>) {
+    core.unsubscribe(event, listener);
+  }
+  function enableConsoleEvents() {
+    core.enableConsoleEvents();
+    setEnabled(true);
+  }
+  function disableConsoleEvents() {
+    core.disableConsoleEvents();
+    setEnabled(false);
+  }
+
+  return { on, off, subscribe, unsubscribe, enableConsoleEvents, disableConsoleEvents, isConsoleEventsEnabled: enabled };
 }
 
 export type MediaSearchHookShape = typeof useMediaSearch;
