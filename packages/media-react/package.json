@@ -10,6 +10,6 @@
     "lint": "echo 'no lint configured'"
   },
   "dependencies": {
-    "@media-sdk/media-core": "workspace:packages/media-core"
+    "@media-sdk/media-core": "workspace:*"
   }
 }
