@@ -11,7 +11,7 @@
   "dependencies": {
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
-    "@media-sdk/media-react": "workspace:packages/media-react",
-    "@media-sdk/media-ui-react": "workspace:packages/media-ui-react"
+    "@media-sdk/media-react": "file:../../packages/media-react",
+    "@media-sdk/media-ui-react": "file:../../packages/media-ui-react"
   }
 }
