@@ -209,3 +209,13 @@
 2026-08-12T07:24:59.951614Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
 2026-08-12T07:25:01.652052Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("vercel.json")}
 2026-08-12T07:25:01.652061Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:29:32.861869Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2026-08-12T07:29:32.862101Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All)
+2026-08-12T07:29:38.453197Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("package.json")}
+2026-08-12T07:29:38.453205Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(All)
+2026-08-12T07:29:41.353014Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/106.cookie")}
+2026-08-12T07:29:41.353024Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:29:41.452545Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/107.cookie"), AnchoredSystemPathBuf(".turbo/cookies/112.cookie"), AnchoredSystemPathBuf(".turbo/cookies/110.cookie"), AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/111.cookie"), AnchoredSystemPathBuf(".turbo/cookies/108.cookie"), AnchoredSystemPathBuf(".turbo/cookies/109.cookie")}
+2026-08-12T07:29:41.452559Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:29:42.453294Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/113.cookie")}
+2026-08-12T07:29:42.453305Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
