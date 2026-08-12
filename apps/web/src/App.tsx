@@ -53,8 +53,7 @@ function CuratedReel() {
   );
 }
 
-function ResultsGrid() {
-  const { state, controls } = useMediaSearch();
+function ResultsGrid({ state, controls }: { state: ReturnType<typeof useMediaSearch>['state']; controls: ReturnType<typeof useMediaSearch>['controls'] }) {
   const photos = (state.data && (state.data as any).photos) || [];
 
   const items = useMemo(
@@ -124,63 +123,81 @@ function ResultsGrid() {
 
 export default function App() {
   const apiKey = import.meta.env.VITE_PEXELS_API_KEY || '';
-  const [query, setQuery] = useState('');
+
+  if (!apiKey) {
+    return (
+      <div style={{ minHeight: '100vh', display: 'grid', placeItems: 'center', fontFamily: 'system-ui, sans-serif', background: '#07111d', color: '#edf3ff', padding: 24 }}>
+        <div style={{ maxWidth: 540, textAlign: 'center', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 20, padding: 32 }}>
+          <h2 style={{ marginTop: 0 }}>Missing Pexels API key</h2>
+          <p style={{ marginBottom: 0, color: '#dfe6ff' }}>Set VITE_PEXELS_API_KEY in apps/web/.env to load the curated reel and search results.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <MediaReactProvider config={{ apiKey }}>
-      <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at top, rgba(120,136,255,0.22), transparent 32%), linear-gradient(180deg, #070b15 0%, #101827 100%)', color: '#edf3ff', fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
-        <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 20px 64px' }}>
-          <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32, gap: 12, flexWrap: 'wrap' }}>
-            <div>
-              <div style={{ fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#8ea0ff', fontWeight: 700 }}>Media Atlas</div>
-              <h1 style={{ margin: '8px 0 0', fontSize: 'clamp(2.25rem, 4vw, 4rem)', lineHeight: 1.08 }}>Premium visual discovery</h1>
-            </div>
-            <div style={{ padding: '10px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#dfe6ff' }}>Curated stories • Search-driven</div>
-          </header>
-
-          <CuratedReel />
-
-          <section style={{ marginTop: 10, marginBottom: 28, background: 'rgba(12,17,28,0.72)', borderRadius: 24, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 24px 80px rgba(8, 12, 22, 0.35)' }}>
-            <div style={{ display: 'flex', gap: 12, padding: 18, flexWrap: 'wrap' }}>
-              <input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search premium visuals, ideas, moods..."
-                style={{
-                  flex: 1,
-                  minWidth: 220,
-                  padding: '16px 18px',
-                  borderRadius: 16,
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  background: 'rgba(15, 21, 32, 0.9)',
-                  color: '#edf3ff',
-                  fontSize: 16,
-                  outline: 'none',
-                  boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.02)',
-                }}
-              />
-              <SearchButton query={query} />
-            </div>
-          </section>
-
-          <section>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
-              <h2 style={{ margin: 0, fontSize: 30, color: '#f5f7ff' }}>Search results</h2>
-              <div style={{ color: '#a7b7d8', fontSize: 14 }}>Fresh inspiration for every mood</div>
-            </div>
-            <ResultsGrid />
-          </section>
-        </div>
-      </div>
+      <AppContent />
     </MediaReactProvider>
   );
 }
 
-function SearchButton({ query }: { query: string }) {
-  const { controls } = useMediaSearch();
+function AppContent() {
+  const [query, setQuery] = useState('');
+  const { state, controls } = useMediaSearch({ initialQuery: 'nature', initialPage: 1, initialPerPage: 12 });
+
+  return (
+    <div style={{ minHeight: '100vh', background: 'radial-gradient(circle at top, rgba(120,136,255,0.22), transparent 32%), linear-gradient(180deg, #070b15 0%, #101827 100%)', color: '#edf3ff', fontFamily: 'Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '40px 20px 64px' }}>
+        <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32, gap: 12, flexWrap: 'wrap' }}>
+          <div>
+            <div style={{ fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase', color: '#8ea0ff', fontWeight: 700 }}>Media Atlas</div>
+            <h1 style={{ margin: '8px 0 0', fontSize: 'clamp(2.25rem, 4vw, 4rem)', lineHeight: 1.08 }}>Premium visual discovery</h1>
+          </div>
+          <div style={{ padding: '10px 16px', borderRadius: 999, background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#dfe6ff' }}>Curated stories • Search-driven</div>
+        </header>
+
+        <CuratedReel />
+
+        <section style={{ marginTop: 10, marginBottom: 28, background: 'rgba(12,17,28,0.72)', borderRadius: 24, border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 24px 80px rgba(8, 12, 22, 0.35)' }}>
+          <div style={{ display: 'flex', gap: 12, padding: 18, flexWrap: 'wrap' }}>
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search premium visuals, ideas, moods..."
+              style={{
+                flex: 1,
+                minWidth: 220,
+                padding: '16px 18px',
+                borderRadius: 16,
+                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(15, 21, 32, 0.9)',
+                color: '#edf3ff',
+                fontSize: 16,
+                outline: 'none',
+                boxShadow: 'inset 0 0 0 1px rgba(255,255,255,0.02)',
+              }}
+            />
+            <SearchButton query={query} onSearch={() => controls.search(query || 'nature')} />
+          </div>
+        </section>
+
+        <section>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 12, flexWrap: 'wrap' }}>
+            <h2 style={{ margin: 0, fontSize: 30, color: '#f5f7ff' }}>Search results</h2>
+            <div style={{ color: '#a7b7d8', fontSize: 14 }}>Fresh inspiration for every mood</div>
+          </div>
+          <ResultsGrid state={state} controls={controls} />
+        </section>
+      </div>
+    </div>
+  );
+}
+
+function SearchButton({ query, onSearch }: { query: string; onSearch: () => void }) {
   return (
     <button
-      onClick={() => controls.search(query || 'nature')}
+      onClick={() => onSearch()}
       style={{
         border: 'none',
         borderRadius: 16,
@@ -194,7 +211,7 @@ function SearchButton({ query }: { query: string }) {
         boxShadow: '0 18px 30px rgba(110, 131, 255, 0.35)',
       }}
     >
-      Search
+      {query ? 'Search' : 'Explore'}
     </button>
   );
 }
