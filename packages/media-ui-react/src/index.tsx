@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { RefCallback } from 'react';
 
 export type HeadlessPropGetter<P extends object = {}> = (props?: P) => P & Record<string, unknown>;
@@ -343,18 +343,60 @@ export function useLightbox<TItem>(options: LightboxOptions<TItem>): UseLightbox
   };
 }
 
-export function useReelSwiper<TItem>(options: ReelSwiperOptions<TItem>): UseReelSwiperReturn<TItem> {
-  const { items, defaultIndex = 0, snap = true, snapAlignment = 'center' } = options;
+export function useReelSwiper<TItem>(options: ReelSwiperOptions<TItem>): UseReelSwiperReturn<TItem> & { scrollTo: (index: number, behavior?: ScrollBehavior) => void } {
+  const { items, defaultIndex = 0, snap = true, snapAlignment = 'center', onIndexChange, onVisibleRangeChange } = options;
   const [currentIndex, setCurrentIndex] = useState<number>(defaultIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [isKeyboardNavigating, setIsKeyboardNavigating] = useState(false);
+  const trackRef = useRef<HTMLElement | null>(null);
+  const slideRefs = useRef<Record<number, HTMLElement | null>>({});
 
-  const state: ReelSwiperState = { currentIndex, isDragging, isKeyboardNavigating, visibleRange: { start: 0, end: Math.min(items.length - 1, 3) } };
+  const updateVisibleRange = useCallback((index: number) => {
+    const start = Math.max(0, index - 1);
+    const end = Math.min(items.length - 1, index + 1);
+    const nextRange = { start, end };
+    onVisibleRangeChange?.(nextRange);
+    return nextRange;
+  }, [items.length, onVisibleRangeChange]);
+
+  const scrollTo = useCallback((index: number, behavior: ScrollBehavior = 'smooth') => {
+    const safeIndex = Math.max(0, Math.min(items.length - 1, index));
+    setCurrentIndex(safeIndex);
+    updateVisibleRange(safeIndex);
+    const target = slideRefs.current[safeIndex];
+    if (target && trackRef.current) {
+      target.scrollIntoView({ behavior, block: 'nearest' });
+    }
+  }, [items.length, updateVisibleRange]);
+
+  const state: ReelSwiperState = {
+    currentIndex,
+    isDragging,
+    isKeyboardNavigating,
+    visibleRange: updateVisibleRange(currentIndex),
+  };
+
+  useEffect(() => {
+    const safeIndex = Math.max(0, Math.min(items.length - 1, currentIndex));
+    if (safeIndex !== currentIndex) {
+      setCurrentIndex(safeIndex);
+    }
+  }, [items.length, currentIndex]);
+
+  useEffect(() => {
+    onIndexChange?.(currentIndex);
+  }, [currentIndex, onIndexChange]);
 
   const getRootProps = (props = {} as any) => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') setCurrentIndex((i) => Math.min(items.length - 1, i + 1));
-      if (e.key === 'ArrowUp') setCurrentIndex((i) => Math.max(0, i - 1));
+      if (e.key === 'ArrowDown') {
+        setIsKeyboardNavigating(true);
+        scrollTo(Math.min(items.length - 1, currentIndex + 1));
+      }
+      if (e.key === 'ArrowUp') {
+        setIsKeyboardNavigating(true);
+        scrollTo(Math.max(0, currentIndex - 1));
+      }
     };
     return mergeProps({ role: props.role ?? 'region', tabIndex: 0, onKeyDown } as any, props as any) as any;
   };
@@ -362,19 +404,58 @@ export function useReelSwiper<TItem>(options: ReelSwiperOptions<TItem>): UseReel
   const getTrackProps = (props = {} as any) => {
     const style = { overflowY: 'auto', scrollSnapType: snap ? 'y mandatory' : undefined, ...props.style } as any;
     const onScroll = (e: Event) => {
-      // naive: compute nearest child index by scrollTop in consumer layout; keep minimal
+      if (!trackRef.current) return;
+      const track = trackRef.current;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+      for (const [index, node] of Object.entries(slideRefs.current)) {
+        if (!node) continue;
+        const rect = node.getBoundingClientRect();
+        const distance = Math.abs(rect.top - track.getBoundingClientRect().top);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = Number(index);
+        }
+      }
+      if (closestIndex !== currentIndex) {
+        setCurrentIndex(closestIndex);
+      }
+      const range = updateVisibleRange(closestIndex);
+      if (props.onScroll) {
+        props.onScroll(e as any);
+      }
+      if (props.onVisibleRangeChange) {
+        props.onVisibleRangeChange(range);
+      }
     };
-    return mergeProps({ role: props.role ?? 'list', style, onScroll } as any, props as any) as any;
+    return mergeProps({
+      role: props.role ?? 'list',
+      ref: (node: HTMLElement | null) => {
+        trackRef.current = node;
+        if (typeof props.ref === 'function') props.ref(node);
+      },
+      style,
+      onScroll,
+    } as any, props as any) as any;
   };
 
   const getSlideProps = (props = {} as any) => {
     const index = props.index as number;
-    const style = { scrollSnapAlign: snapAlignment } as any;
-    return mergeProps({ role: props.role ?? 'listitem', 'aria-current': currentIndex === index ? true : undefined, 'data-index': index, style } as any, props as any) as any;
+    const style = { scrollSnapAlign: snapAlignment, ...props.style } as any;
+    return mergeProps({
+      role: props.role ?? 'listitem',
+      'aria-current': currentIndex === index ? true : undefined,
+      'data-index': index,
+      style,
+      ref: (node: HTMLElement | null) => {
+        slideRefs.current[index] = node;
+        if (typeof props.ref === 'function') props.ref(node);
+      },
+    } as any, props as any) as any;
   };
 
-  const getPrevButtonProps = (props = {} as any) => mergeProps({ onClick: () => setCurrentIndex((i) => Math.max(0, i - 1)), 'aria-label': 'Previous', disabled: currentIndex <= 0 } as any, props as any) as any;
-  const getNextButtonProps = (props = {} as any) => mergeProps({ onClick: () => setCurrentIndex((i) => Math.min(items.length - 1, i + 1)), 'aria-label': 'Next', disabled: currentIndex >= items.length - 1 } as any, props as any) as any;
+  const getPrevButtonProps = (props = {} as any) => mergeProps({ onClick: () => scrollTo(Math.max(0, currentIndex - 1)), 'aria-label': 'Previous', disabled: currentIndex <= 0 } as any, props as any) as any;
+  const getNextButtonProps = (props = {} as any) => mergeProps({ onClick: () => scrollTo(Math.min(items.length - 1, currentIndex + 1)), 'aria-label': 'Next', disabled: currentIndex >= items.length - 1 } as any, props as any) as any;
 
   const getPaginationProps = (props = {} as any) => mergeProps({ role: props.role ?? 'navigation', 'aria-label': props['aria-label'] ?? 'Pagination' } as any, props as any) as any;
   const getSlideIndicatorProps = (props = {} as any) => mergeProps({ 'aria-current': currentIndex === props.index } as any, props as any) as any;
@@ -388,7 +469,6 @@ export function useReelSwiper<TItem>(options: ReelSwiperOptions<TItem>): UseReel
     getNextButtonProps,
     getPaginationProps,
     getSlideIndicatorProps,
-    // expose scrollTo for future usage
-    scrollTo: (index: number) => setCurrentIndex(Math.max(0, Math.min(items.length - 1, index))),
-  } as UseReelSwiperReturn<TItem> & { scrollTo: (index: number) => void };
+    scrollTo,
+  } as UseReelSwiperReturn<TItem> & { scrollTo: (index: number, behavior?: ScrollBehavior) => void };
 }

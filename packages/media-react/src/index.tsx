@@ -112,21 +112,22 @@ export function useMediaSearch(options?: UseMediaSearchOptions): UseMediaSearchR
   async function doSearch(q: string, opts?: SearchOptions, page = 1) {
     const normalizedQuery = (q ?? '').trim();
     const effectiveQuery = normalizedQuery || latest.current.query || 'nature';
+    const mergedOptions = { ...(latest.current.options ?? {}), ...(opts ?? {}) };
 
     setState((s) => ({ ...s, isLoading: true, error: null }));
     try {
-      const res = await client.search(effectiveQuery, { ...opts, page });
+      const res = await client.search(effectiveQuery, { ...mergedOptions, page });
       setState((s) => ({
         ...s,
         query: effectiveQuery,
-        options: opts ?? s.options,
+        options: mergedOptions,
         page,
         data: res,
         isLoading: false,
         error: null,
         hasMore: (res as any).next_page ? true : false,
       }));
-      latest.current = { query: effectiveQuery, options: opts ?? latest.current.options, page };
+      latest.current = { query: effectiveQuery, options: mergedOptions, page };
     } catch (err: any) {
       setState((s) => ({ ...s, isLoading: false, error: err }));
     }
@@ -143,8 +144,9 @@ export function useMediaSearch(options?: UseMediaSearchOptions): UseMediaSearchR
   const controls: MediaSearchControls = {
     async search(q: string, opts?: SearchOptions) {
       const nextQuery = (q ?? '').trim() || 'nature';
-      latest.current = { query: nextQuery, options: opts ?? {}, page: 1 };
-      await doSearch(nextQuery, opts, 1);
+      const mergedOptions = { ...(latest.current.options ?? {}), ...(opts ?? {}) };
+      latest.current = { query: nextQuery, options: mergedOptions, page: 1 };
+      await doSearch(nextQuery, mergedOptions, 1);
     },
     async loadPage(page: number) {
       const q = latest.current.query || 'nature';
@@ -152,12 +154,14 @@ export function useMediaSearch(options?: UseMediaSearchOptions): UseMediaSearchR
       await doSearch(q, opts, page);
     },
     async loadMore() {
+      if (state.isLoading) return;
       const next = state.page + 1;
       await controls.loadPage(next);
     },
     setOptions(opts: SearchOptions) {
-      latest.current.options = opts;
-      setState((s) => ({ ...s, options: opts }));
+      const mergedOptions = { ...(latest.current.options ?? {}), ...opts };
+      latest.current.options = mergedOptions;
+      setState((s) => ({ ...s, options: mergedOptions }));
     },
     async refresh() {
       await doSearch(latest.current.query, latest.current.options, latest.current.page);
