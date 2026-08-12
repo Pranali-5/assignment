@@ -27,16 +27,23 @@ const ClientContext = createContext<{ client: MediaCoreClient } | null>(null);
 
 export function MediaReactProvider({ config, children, enableConsoleEvents }: MediaReactProviderProps): ReactElement {
   const cfg = useMemo(() => ({ ...config }), [config]);
+  const initializedRef = useRef(false);
+
+  if (!cfg?.apiKey) throw new Error('MediaReactProvider: config.apiKey required');
+
+  if (!initializedRef.current) {
+    core.init(cfg as MediaCoreConfig);
+    initializedRef.current = true;
+  }
 
   useEffect(() => {
-    if (!cfg?.apiKey) throw new Error('MediaReactProvider: config.apiKey required');
-    core.init(cfg as MediaCoreConfig);
-    if (enableConsoleEvents) core.enableConsoleEvents();
+    if (enableConsoleEvents) {
+      core.enableConsoleEvents();
+    }
     return () => {
-      // no teardown in core for now, but keep slot for future
       core.disableConsoleEvents();
     };
-  }, [cfg, enableConsoleEvents]);
+  }, [enableConsoleEvents]);
 
   const value = useMemo(() => ({ client: (core as unknown) as MediaCoreClient }), []);
   return <ClientContext.Provider value={value}>{children}</ClientContext.Provider>;

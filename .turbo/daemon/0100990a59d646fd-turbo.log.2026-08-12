@@ -219,3 +219,65 @@
 2026-08-12T07:29:41.452559Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
 2026-08-12T07:29:42.453294Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/113.cookie")}
 2026-08-12T07:29:42.453305Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:40:47.955530Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".gitignore")}
+2026-08-12T07:40:47.956177Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:40:48.647247Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".gitignore")}
+2026-08-12T07:40:48.647256Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:21.361747Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md")}
+2026-08-12T07:44:21.362961Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:27.450534Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs"), AnchoredSystemPathBuf("docs/sdk-docs.md")}
+2026-08-12T07:44:27.450544Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:27.550670Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/sdk-docs.md")}
+2026-08-12T07:44:27.550679Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:44.850399Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/components-docs.md")}
+2026-08-12T07:44:44.850441Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:44.949769Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/components-docs.md")}
+2026-08-12T07:44:44.949778Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:51.649823Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/114.cookie")}
+2026-08-12T07:44:51.649831Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:51.749574Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/116.cookie"), AnchoredSystemPathBuf(".turbo/cookies/118.cookie"), AnchoredSystemPathBuf(".turbo/cookies/117.cookie"), AnchoredSystemPathBuf(".turbo/cookies/120.cookie"), AnchoredSystemPathBuf(".turbo/cookies/119.cookie"), AnchoredSystemPathBuf(".turbo/cookies/115.cookie")}
+2026-08-12T07:44:51.749587Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:44:52.650507Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/121.cookie")}
+2026-08-12T07:44:52.650515Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:53.665813Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("README.md"), AnchoredSystemPathBuf("docs/components-docs.md"), AnchoredSystemPathBuf("docs/sdk-docs.md")}
+2026-08-12T07:44:53.665844Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:44:53.749456Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("docs/components-docs.md"), AnchoredSystemPathBuf("docs/sdk-docs.md"), AnchoredSystemPathBuf("README.md")}
+2026-08-12T07:44:53.749467Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:46:12.259397Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-react/src/index.tsx")}
+2026-08-12T07:46:12.260139Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@media-sdk/media-react"), path: AnchoredSystemPathBuf("packages/media-react") }}))
+2026-08-12T07:46:18.249517Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/tsconfig.json")}
+2026-08-12T07:46:18.249526Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:46:20.349213Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/122.cookie")}
+2026-08-12T07:46:20.349237Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:46:20.448858Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf(".turbo/cookies/126.cookie"), AnchoredSystemPathBuf(".turbo/cookies/124.cookie"), AnchoredSystemPathBuf("packages/media-react/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/127.cookie"), AnchoredSystemPathBuf(".turbo/cookies/123.cookie"), AnchoredSystemPathBuf(".turbo/cookies/125.cookie")}
+2026-08-12T07:46:20.448868Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("@media-sdk/media-react"), path: AnchoredSystemPathBuf("packages/media-react") }}))
+2026-08-12T07:46:21.149745Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/tsconfig.json")}
+2026-08-12T07:46:21.149756Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:46:21.449233Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-react/tsconfig.tsbuildinfo"), AnchoredSystemPathBuf(".turbo/cookies/128.cookie")}
+2026-08-12T07:46:21.449241Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("@media-sdk/media-react"), path: AnchoredSystemPathBuf("packages/media-react") }}))
+2026-08-12T07:46:21.548130Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-react/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/129.cookie"), AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log")}
+2026-08-12T07:46:21.548142Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }, WorkspacePackage { name: Other("@media-sdk/media-react"), path: AnchoredSystemPathBuf("packages/media-react") }, WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }}))
+2026-08-12T07:46:21.548167Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:46:22.448859Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/.turbo/turbo-build.log"), AnchoredSystemPathBuf(".turbo/cookies/130.cookie")}
+2026-08-12T07:46:22.448870Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:46:28.649965Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/tsconfig.json")}
+2026-08-12T07:46:28.649982Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:46:28.682608Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:46:36.048700Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-react/src/index.tsx")}
+2026-08-12T07:46:36.048727Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@media-sdk/media-react"), path: AnchoredSystemPathBuf("packages/media-react") }}))
+2026-08-12T07:46:36.061041Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:48:16.047556Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("tsconfig.base.json"), AnchoredSystemPathBuf("apps/web/src/App.tsx"), AnchoredSystemPathBuf("apps/web/tsconfig.json")}
+2026-08-12T07:48:16.047609Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:49:24.247214Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/tsconfig.json"), AnchoredSystemPathBuf("tsconfig.base.json")}
+2026-08-12T07:49:24.247257Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Root, path: AnchoredSystemPathBuf("") }, WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:49:24.296943Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:49:24.348102Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("apps/web/src/App.tsx")}
+2026-08-12T07:49:24.348111Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("apps-web"), path: AnchoredSystemPathBuf("apps/web") }}))
+2026-08-12T07:49:24.348124Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:50:00.047703Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-ui-react/src/index.tsx")}
+2026-08-12T07:50:00.047727Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@media-sdk/media-ui-react"), path: AnchoredSystemPathBuf("packages/media-ui-react") }}))
+2026-08-12T07:50:03.547172Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-ui-react/src/index.tsx")}
+2026-08-12T07:50:03.547184Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@media-sdk/media-ui-react"), path: AnchoredSystemPathBuf("packages/media-ui-react") }}))
+2026-08-12T07:50:03.547195Z  WARN turborepo_lib::package_changes_watcher: hashes are the same, no need to rerun
+2026-08-12T07:50:54.246450Z  WARN turborepo_lib::package_changes_watcher: changed_files: {AnchoredSystemPathBuf("packages/media-ui-react/tsconfig.tsbuildinfo")}
+2026-08-12T07:50:54.246471Z  WARN turborepo_lib::package_changes_watcher: changed_packages: Ok(Some({WorkspacePackage { name: Other("@media-sdk/media-ui-react"), path: AnchoredSystemPathBuf("packages/media-ui-react") }}))

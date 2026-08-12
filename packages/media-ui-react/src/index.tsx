@@ -85,7 +85,7 @@ export interface UseLightboxReturn<TItem> {
     index?: number;
     item?: TItem;
     onClick?: () => void;
-    'aria-haspopup'?: string;
+    'aria-haspopup'?: boolean | 'dialog' | 'grid' | 'listbox' | 'menu' | 'tree' | 'true' | 'false' | string;
     'aria-controls'?: string;
   }>;
   getBackdropProps: HeadlessPropGetter<{
@@ -147,6 +147,7 @@ export interface UseReelSwiperReturn<TItem> {
   state: ReelSwiperState;
   getRootProps: HeadlessPropGetter<{
     role?: string;
+    'aria-label'?: string;
     tabIndex?: number;
     onWheel?: (event: WheelEvent) => void;
     onKeyDown?: (event: KeyboardEvent) => void;

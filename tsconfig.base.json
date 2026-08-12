@@ -2,7 +2,8 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": false,
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,

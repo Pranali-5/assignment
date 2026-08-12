@@ -23,6 +23,9 @@ function CuratedReel() {
 
   if (!items.length) return null;
 
+  const reelRootProps = reel.getRootProps({ role: 'region', 'aria-label': 'Trending media reel' }) as any;
+  const reelTrackProps = reel.getTrackProps({ role: 'list' }) as any;
+
   return (
     <section style={{ marginBottom: 28 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -33,10 +36,10 @@ function CuratedReel() {
         <div style={{ padding: '8px 12px', border: '1px solid rgba(255,255,255,0.12)', borderRadius: 999, color: '#dfe6ff', background: 'rgba(255,255,255,0.04)', fontSize: 12 }}>Live now</div>
       </div>
 
-      <div {...reel.getRootProps({ role: 'region', 'aria-label': 'Trending media reel' })} style={{ overflow: 'hidden', borderRadius: 24, background: 'linear-gradient(145deg, rgba(20,27,47,0.92), rgba(11,15,27,0.82))', boxShadow: '0 24px 80px rgba(18, 24, 46, 0.45)', border: '1px solid rgba(255,255,255,0.06)' }}>
-        <div {...reel.getTrackProps({ role: 'list' })} style={{ display: 'flex', gap: 16, overflowX: 'auto', padding: '18px 18px 22px', scrollBehavior: 'smooth', scrollbarWidth: 'none' }}>
+      <div {...reelRootProps} style={{ overflow: 'hidden', borderRadius: 24, background: 'linear-gradient(145deg, rgba(20,27,47,0.92), rgba(11,15,27,0.82))', boxShadow: '0 24px 80px rgba(18, 24, 46, 0.45)', border: '1px solid rgba(255,255,255,0.06)' }}>
+        <div {...reelTrackProps} style={{ display: 'flex', gap: 16, overflowX: 'auto', padding: '18px 18px 22px', scrollBehavior: 'smooth', scrollbarWidth: 'none' }}>
           {items.map((item: any, index: number) => (
-            <div key={item.id} {...reel.getSlideProps({ index, item })} style={{ flex: '0 0 220px', minWidth: 220, position: 'relative' }}>
+            <div key={item.id} {...(reel.getSlideProps({ index, item }) as any)} style={{ flex: '0 0 220px', minWidth: 220, position: 'relative' }}>
               <div style={{ position: 'relative', borderRadius: 20, overflow: 'hidden', boxShadow: '0 14px 32px rgba(6, 10, 24, 0.38)', border: '1px solid rgba(255,255,255,0.08)' }}>
                 <img src={item.src} alt={item.alt} style={{ width: '100%', height: 260, objectFit: 'cover', display: 'block' }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.68))' }} />
@@ -69,8 +72,11 @@ function ResultsGrid({ state, controls }: { state: ReturnType<typeof useMediaSea
     [photos],
   );
 
-  const grid = useGrid({ items, itemToKey: (it) => it.id, selectionMode: 'single' });
+  const grid = useGrid({ items, itemToKey: (it: any) => it.id, selectionMode: 'single' });
   const lightbox = useLightbox({ items, defaultIndex: 0 });
+  const gridRootProps = grid.getRootProps({ role: 'grid', 'aria-label': 'Search results' }) as any;
+  const lightboxRootProps = lightbox.getRootProps({ role: 'dialog' }) as any;
+  const lightboxViewportProps = lightbox.getViewportProps() as any;
 
   return (
     <div>
@@ -86,11 +92,11 @@ function ResultsGrid({ state, controls }: { state: ReturnType<typeof useMediaSea
       {state.isLoading && <div style={{ marginBottom: 12, color: '#dfe6ff' }}>Loading premium visuals...</div>}
       {state.error && <div style={{ marginBottom: 12, color: '#ff9caa' }}>Error: {String(state.error)}</div>}
 
-      <div {...grid.getRootProps({ role: 'grid', 'aria-label': 'Search results' })} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
+      <div {...gridRootProps} style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
         {items.map((item: any, i: number) => (
-          <div key={item.id} {...grid.getItemWrapperProps({ index: i, item })}>
-            <div {...grid.getItemProps({ index: i, item, role: 'gridcell' })} style={{ borderRadius: 18, overflow: 'hidden', background: 'rgba(17, 24, 39, 0.72)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 12px 32px rgba(8, 12, 22, 0.28)', transition: 'transform 0.2s ease, box-shadow 0.2s ease', }}>
-              <div {...lightbox.getTriggerProps({ index: i, item })} style={{ cursor: 'pointer' }}>
+          <div key={item.id} {...(grid.getItemWrapperProps({ index: i, item }) as any)}>
+            <div {...(grid.getItemProps({ index: i, item, role: 'gridcell' }) as any)} style={{ borderRadius: 18, overflow: 'hidden', background: 'rgba(17, 24, 39, 0.72)', border: '1px solid rgba(255,255,255,0.08)', boxShadow: '0 12px 32px rgba(8, 12, 22, 0.28)', transition: 'transform 0.2s ease, box-shadow 0.2s ease', }}>
+              <div {...(lightbox.getTriggerProps({ index: i, item }) as any)} style={{ cursor: 'pointer' }}>
                 <img src={item.src} alt={item.alt} style={{ width: '100%', height: 220, objectFit: 'cover', display: 'block' }} />
                 <div style={{ padding: '10px 12px 14px', color: '#eaf2ff' }}>
                   <div style={{ fontSize: 12, opacity: 0.75, textTransform: 'uppercase', letterSpacing: '0.08em' }}>Editorial</div>
@@ -103,16 +109,16 @@ function ResultsGrid({ state, controls }: { state: ReturnType<typeof useMediaSea
       </div>
 
       {lightbox.state.isOpen && (
-        <div {...lightbox.getRootProps({ role: 'dialog' })} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
-          <div {...lightbox.getBackdropProps()} style={{ position: 'absolute', inset: 0 }} />
-          <div {...lightbox.getViewportProps()} style={{ position: 'relative', width: '82%', maxWidth: 1000, borderRadius: 24, background: 'rgba(8,10,18,0.9)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}>
-            <button {...lightbox.getCloseButtonProps()} style={{ position: 'absolute', right: 12, top: 12, zIndex: 2, background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 999, padding: '8px 12px', cursor: 'pointer' }}>Close</button>
+        <div {...lightboxRootProps} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.72)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 9999 }}>
+          <div {...(lightbox.getBackdropProps() as any)} style={{ position: 'absolute', inset: 0 }} />
+          <div {...lightboxViewportProps} style={{ position: 'relative', width: '82%', maxWidth: 1000, borderRadius: 24, background: 'rgba(8,10,18,0.9)', border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}>
+            <button {...(lightbox.getCloseButtonProps() as any)} style={{ position: 'absolute', right: 12, top: 12, zIndex: 2, background: 'rgba(255,255,255,0.12)', color: '#fff', border: '1px solid rgba(255,255,255,0.14)', borderRadius: 999, padding: '8px 12px', cursor: 'pointer' }}>Close</button>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '42px 56px 28px', gap: 18 }}>
-              <button {...lightbox.getPrevButtonProps()} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, width: 44, height: 44, cursor: 'pointer' }}>←</button>
+              <button {...(lightbox.getPrevButtonProps() as any)} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, width: 44, height: 44, cursor: 'pointer' }}>←</button>
               <div style={{ maxWidth: '80%', maxHeight: '80vh' }}>
                 <img src={items[lightbox.state.currentIndex]?.src} alt={items[lightbox.state.currentIndex]?.alt} style={{ width: '100%', height: 'auto', borderRadius: 18, display: 'block' }} />
               </div>
-              <button {...lightbox.getNextButtonProps()} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, width: 44, height: 44, cursor: 'pointer' }}>→</button>
+              <button {...(lightbox.getNextButtonProps() as any)} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', borderRadius: 999, width: 44, height: 44, cursor: 'pointer' }}>→</button>
             </div>
           </div>
         </div>
