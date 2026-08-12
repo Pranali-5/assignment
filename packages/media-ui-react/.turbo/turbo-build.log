@@ -2,25 +2,3 @@
 > @media-sdk/media-ui-react@0.0.0 build /Users/pranali/Desktop/prj/packages/media-ui-react
 > tsc -b
 
-[91merror[0m[90m TS6059: [0mFile '/Users/pranali/Desktop/prj/src/index.ts' is not under 'rootDir' '/Users/pranali/Desktop/prj/packages/media-ui-react/src'. 'rootDir' is expected to contain all source files.
-  The file is in the program because:
-    Matched by include pattern '../../src/**/*.ts' in '/Users/pranali/Desktop/prj/packages/media-ui-react/tsconfig.json'
-
-  [96mtsconfig.json[0m:[93m9[0m:[93m22[0m
-    [7m9[0m   "include": ["src", "../../src/**/*.ts"]
-    [7m [0m [96m                     ~~~~~~~~~~~~~~~~~~~[0m
-    File is matched by include pattern specified here.
-
-[91merror[0m[90m TS6059: [0mFile '/Users/pranali/Desktop/prj/src/ui-headless.ts' is not under 'rootDir' '/Users/pranali/Desktop/prj/packages/media-ui-react/src'. 'rootDir' is expected to contain all source files.
-  The file is in the program because:
-    Matched by include pattern '../../src/**/*.ts' in '/Users/pranali/Desktop/prj/packages/media-ui-react/tsconfig.json'
-
-  [96mtsconfig.json[0m:[93m9[0m:[93m22[0m
-    [7m9[0m   "include": ["src", "../../src/**/*.ts"]
-    [7m [0m [96m                     ~~~~~~~~~~~~~~~~~~~[0m
-    File is matched by include pattern specified here.
-
-
-Found 2 errors.
-
-[41m[30m ELIFECYCLE [39m[49m [31mCommand failed with exit code 1.[39m
