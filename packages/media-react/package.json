@@ -10,6 +10,7 @@
     "lint": "echo 'no lint configured'"
   },
   "dependencies": {
-    "@media-sdk/media-core": "workspace:*"
+    "@media-sdk/media-core": "workspace:*",
+    "react": "^18.3.0"
   }
 }

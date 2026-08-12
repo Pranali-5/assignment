@@ -8,5 +8,8 @@
     "build": "tsc -b",
     "typecheck": "tsc --noEmit",
     "lint": "echo 'no lint configured'"
+  },
+  "dependencies": {
+    "react": "^18.3.0"
   }
 }
