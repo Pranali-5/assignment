@@ -1,4 +1,10 @@
-# media-core SDK Docs
+---
+layout: default
+title: SDK Documentation
+permalink: /sdk/
+---
+
+# SDK Documentation
 
 ## Purpose
 
