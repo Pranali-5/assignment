@@ -66,8 +66,8 @@ Recommended project settings:
 
 ## Documentation
 
-- [docs/sdk-docs.md](docs/sdk-docs.md)
-- [docs/components-docs.md](docs/components-docs.md)
+- https://pranali-5.github.io/assignment/components/
+- https://pranali-5.github.io/assignment/sdk/
 
 ## AI / hand-written split
 
