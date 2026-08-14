@@ -9,5 +9,5 @@ Welcome to the documentation.
 
 ## Documentation
 
-- [Components Documentation](./components-docs/)
-- [SDK Documentation](./sdk-docs/)
+- [Components Documentation](./components/)
+- [SDK Documentation](./sdk/)
