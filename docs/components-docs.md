@@ -1,4 +1,10 @@
-# media-ui-react Components Docs
+---
+layout: default
+title: Components Documentation
+permalink: /components/
+---
+
+# Components Documentation
 
 ## Headless pattern
 
